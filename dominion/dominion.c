@@ -1036,9 +1036,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                         printf("No cards to reveal\n");
                     }
                 }
-            }
-            
-            else{
+            } else {
                 if (state->deckCount[nextPlayer] == 0){
                     for (i = 0; i < state->discardCount[nextPlayer]; i++){
                         state->deck[nextPlayer][i] = state->discard[nextPlayer][i];//Move to deck
@@ -1101,10 +1099,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             }
             if (j < choice2)
             {
-                return -1;				
+                return -1;
             }
             
-            if (DEBUG) 
+            if (DEBUG)
                 printf("Player %d reveals card number: %d\n", currentPlayer, state->hand[currentPlayer][choice1]);
             
             //increase supply count for choosen card by amount being discarded
@@ -1120,7 +1118,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             }
             
             //discard played card from hand
-            discardCard(handPos, currentPlayer, state, 0);			
+            discardCard(handPos, currentPlayer, state, 0);
             
             //trash copies of cards returned to supply
             for (j = 0; j < choice2; j++)
@@ -1133,7 +1131,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                         break;
                     }
                 }
-            }			
+            }
             
             return 0;
             
@@ -1157,22 +1155,22 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                             {
                                 if (DEBUG)
                                     printf("Player %d reveals card number %d\n", i, state->hand[i][k]);
-                            }	
+                            }
                             break;
-                        }		
+                        }
                     }
                     
                 }
                 
-            }				
+            }
             
             //discard played card from hand
-            discardCard(handPos, currentPlayer, state, 0);			
+            discardCard(handPos, currentPlayer, state, 0);
             
             return 0;
             
             
-        case embargo: 
+        case embargo:
             //+2 Coins
             state->coins = state->coins + 2;
             
@@ -1186,7 +1184,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             state->embargoTokens[choice1]++;
             
             //trash card
-            discardCard(handPos, currentPlayer, state, 1);		
+            discardCard(handPos, currentPlayer, state, 1);
             return 0;
             
         case outpost:
@@ -1206,7 +1204,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                 //gain coins equal to trashed card
                 state->coins = state->coins + getCost( handCard(choice1, state) );
                 //trash card
-                discardCard(choice1, currentPlayer, state, 1);	
+                discardCard(choice1, currentPlayer, state, 1);
             }
             
             //discard card
@@ -1216,7 +1214,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         case sea_hag:
             for (i = 0; i < state->numPlayers; i++){
                 if (i != currentPlayer){
-                    state->discard[i][state->discardCount[i]] = state->deck[i][state->deckCount[i]--];			    state->deckCount[i]--;
+                    state->discard[i][state->discardCount[i]] = state->deck[i][state->deckCount[i]--];
+                    state->deckCount[i]--;
                     state->discardCount[i]++;
                     state->deck[i][state->deckCount[i]--] = curse;//Top card now a curse
                 }
@@ -1257,14 +1256,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     return -1;
 }
 
-int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
-{
+int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag) {
     
-    //if card is not trashed, added to Played pile 
-    if (trashFlag < 1)
-    {
+    //if card is not trashed, added to Played pile
+    if (trashFlag < 1) {
         //add card to played pile
-        state->playedCards[state->playedCardCount] = state->hand[currentPlayer][handPos]; 
+        state->playedCards[state->playedCardCount] = state->hand[currentPlayer][handPos];
         state->playedCardCount++;
     }
     
@@ -1272,18 +1269,13 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
     state->hand[currentPlayer][handPos] = -1;
     
     //remove card from player's hand
-    if ( handPos == (state->handCount[currentPlayer] - 1) ) 	//last card in hand array is played
-    {
+    if ( handPos == (state->handCount[currentPlayer] - 1) ) { 	//last card in hand array is played
         //reduce number of cards in hand
         state->handCount[currentPlayer]--;
-    }
-    else if ( state->handCount[currentPlayer] == 1 ) //only one card in hand
-    {
+    } else if ( state->handCount[currentPlayer] == 1 ) { //only one card in hand
         //reduce number of cards in hand
         state->handCount[currentPlayer]--;
-    }
-    else 	
-    {
+    } else {
         //replace discarded card with last card in hand
         state->hand[currentPlayer][handPos] = state->hand[currentPlayer][ (state->handCount[currentPlayer] - 1)];
         //set last card to -1
@@ -1295,13 +1287,11 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
     return 0;
 }
 
-int gainCard(int supplyPos, struct gameState *state, int toFlag, int player)
-{
+int gainCard(int supplyPos, struct gameState *state, int toFlag, int player) {
     //Note: supplyPos is enum of choosen card
     
     //check if supply pile is empty (0) or card is not used in game (-1)
-    if ( supplyCount(supplyPos, state) < 1 )
-    {
+    if ( supplyCount(supplyPos, state) < 1 ) {
         return -1;
     }
     
@@ -1310,18 +1300,13 @@ int gainCard(int supplyPos, struct gameState *state, int toFlag, int player)
     // toFlag = 1 : add to deck
     // toFlag = 2 : add to hand
     
-    if (toFlag == 1)
-    {
+    if (toFlag == 1) {
         state->deck[ player ][ state->deckCount[player] ] = supplyPos;
         state->deckCount[player]++;
-    }
-    else if (toFlag == 2)
-    {
+    } else if (toFlag == 2) {
         state->hand[ player ][ state->handCount[player] ] = supplyPos;
         state->handCount[player]++;
-    }
-    else
-    {
+    } else {
         state->discard[player][ state->discardCount[player] ] = supplyPos;
         state->discardCount[player]++;
     }
@@ -1332,29 +1317,22 @@ int gainCard(int supplyPos, struct gameState *state, int toFlag, int player)
     return 0;
 }
 
-int updateCoins(int player, struct gameState *state, int bonus)
-{
+int updateCoins(int player, struct gameState *state, int bonus) {
     int i;
     
     //reset coin count
     state->coins = 0;
     
     //add coins for each Treasure card in player's hand
-    for (i = 0; i < state->handCount[player]; i++)
-    {
-        if (state->hand[player][i] == copper)
-        {
+    for (i = 0; i < state->handCount[player]; i++) {
+        if (state->hand[player][i] == copper) {
             state->coins += 1;
-        }
-        else if (state->hand[player][i] == silver)
-        {
+        } else if (state->hand[player][i] == silver) {
             state->coins += 2;
-        }
-        else if (state->hand[player][i] == gold)
-        {
+        } else if (state->hand[player][i] == gold) {
             state->coins += 3;
-        }	
-    }	
+        }
+    }
     
     //add bonus
     state->coins += bonus;
