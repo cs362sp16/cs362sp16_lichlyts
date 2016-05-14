@@ -1,0 +1,14 @@
+For starters the adventurer card is one of the ones I implemented a bug in (I imagine most people won’t look here when looking for the bugs, so I don’t feel bad saying it). The way I am checking if the card worked was to see how many cards are in the players hand before the function call and after, if there are two more cards than before the function call then it succeeded. Here’s the problem, my bug was to add 3 cards, not 2. So this is very obvious when running this code.
+
+For adventurer I managed to cover 100% if its code and branches.
+Snippet from randomtestadventurer.out:
+Function 'adventurer_card'
+Lines executed:100.00% of 16
+Branches executed:100.00% of 12
+
+Outpost I also managed 100% code and branch coverage considering I took it up to 10,000,000 tests which all passed.
+
+
+Great Hall also passed all 1,000 of its tests with 100% code and branch coverage.
+
+I think the random tests are better than the card tests in assignment 2 because I could run it through remarkable cases it wouldn’t regularly come across in a normal game or that I could hard code to test. My random test cases had occasional failures when I corrected adventurer, but only 5 or so out of 1000+ and I could see what was causing it by the printouts I made.
