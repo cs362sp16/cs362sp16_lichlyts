@@ -39,28 +39,34 @@ cardtest3:
 cardtest4:
 	gcc dominion.c cardtest4.c rngs.c -o cardtest4 $(CFLAGS)
 
-randomtestadventurer.out:
-	gcc -std=c11 -g dominion.c rngs.c randomtestadventurer.c -o randomtestadventurer $(CFLAGS)
-	./randomtestadventurer 42 &> randomtestadventurer.out
+randomtestadventurer: dominion.o rngs.o
+	gcc -std=c11 dominion.o rngs.o randomtestadventurer.c -o randomtestadventurer $(CFLAGS)
+
+randomtestcard1: dominion.o rngs.o
+	gcc -std=c11 dominion.o rngs.o randomtestcard1.c -o randomtestcard1 $(CFLAGS)
+
+randomtestcard2: dominion.o rngs.o
+	gcc -std=c11 dominion.o rngs.o randomtestcard2.c -o randomtestcard2 $(CFLAGS)
+
+randomtestadventurer.out: randomtestadventurer
+	./randomtestadventurer 90 &> randomtestadventurer.out
 	gcov -f -b dominion.c >> randomtestadventurer.out
 	cat dominion.c.gcov >> randomtestadventurer.out
 	make clean
 
-randomtestcard1.out:
-	gcc -std=c11 -g dominion.c rngs.c randomtestcard1.c -o randomtestcard1 $(CFLAGS)
+randomtestcard1.out: randomtestcard1
 	./randomtestcard1 42 &> randomtestcard1.out
 	gcov -f -b dominion.c >> randomtestcard1.out
 	cat dominion.c.gcov >> randomtestcard1.out
 	make clean
 
-randomtestcard2.out:
-	gcc -std=c11 -g dominion.c rngs.c randomtestcard2.c -o randomtestcard2 $(CFLAGS)
+randomtestcard2.out: randomtestcard2
 	./randomtestcard2 42 &> randomtestcard2.out
 	gcov -f -b dominion.c >> randomtestcard2.out
 	cat dominion.c.gcov >> randomtestcard2.out
 	make clean
 
-randomtestsuite: randomtestadventurer.out randomtestcard1.out randomtestcard2.out
+randomtestsuite: randomtestadventurer randomtestcard1 randomtestcard2
 	
 testsuite: unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4
 	
@@ -77,7 +83,16 @@ unittestresults.out: testsuite
 	cat dominion.c.gcov >> unittestresults.out
 	make clean
 
-all: playdom player testsuite
+testdom: dominion.o interface.o
+	gcc dominion.o interface.o rngs.o testdominion.c -o testdom $(CFLAGS)
+
+testdominion.out: testdom
+	./testdom 42 &> testdominion.out
+	gcov dominion.c >> testdominion.out
+	cat dominion.c.gcov >> testdominion.out
+	make clean
+
+all: playdom player testsuite randomtestsuite testdom
 
 clean:
-	rm -rf *.o playdom.exe playdom test.exe test player unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4 randomtestcard1 randomtestcard2 randomtestadventurer player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so *.a *.dSYM
+	rm -rf *.o playdom.exe playdom test.exe test player unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4 randomtestcard1 randomtestcard2 randomtestadventurer testdom player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so *.a *.dSYM

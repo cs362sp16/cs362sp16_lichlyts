@@ -1,0 +1,3 @@
+I tried a few times and I couldn’t find an implementation of dominion that was different from the one I had. Granted I didn’t change hardly anything in dominion.c and the few people I have talked to have done the same. I get about 60% code coverage from my testdom exec.
+
+From an outside perspective I think it would be difficult to tell who is correct, but it would require looking at each persons code and making sure it does what it needs to. This isn’t ideal because it requires a lot of work.
