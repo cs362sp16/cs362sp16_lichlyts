@@ -1,12 +1,9 @@
-CFLAGS = -Wall -fpic -coverage -lm
+CFLAGS = -Wall -fpic -coverage -lm -std=c11
 
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
 
 dominion.o: dominion.h dominion.c rngs.o
-	gcc -c dominion.c -g  $(CFLAGS)
-
-mutantdominion.o: dominion.h mutantdominion.c rngs.o
 	gcc -c dominion.c -g  $(CFLAGS)
 
 playdom: dominion.o playdom.c
@@ -70,8 +67,6 @@ randomtestcard2.out: randomtestcard2
 	make clean
 
 randomtestsuite: randomtestadventurer randomtestcard1 randomtestcard2
-
-randomtestsuite.outs: randomtestadventurer.out randomtestcard1.out randomtestcard2.out
 	
 testsuite: unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4
 	
@@ -91,22 +86,13 @@ unittestresults.out: testsuite
 testdom: dominion.o interface.o
 	gcc dominion.o interface.o rngs.o testdominion.c -o testdom $(CFLAGS)
 
-testmutantdom: mutantdominion.o interface.o
-	gcc mutantdominion.o interface.o rngs.o testdominion.c -o testmutantdom $(CFLAGS)
-
 testdominion.out: testdom
 	./testdom 42 &> testdominion.out
 	gcov dominion.c >> testdominion.out
 	cat dominion.c.gcov >> testdominion.out
 	make clean
 
-testmutantdominion.out: testmutantdom
-	./testmutantdom 42 &> testmutantdominion.out
-	gcov mutantdominion.c >> testmutantdominion.out
-	cat mutantdominion.c.gcov >> testmutantdominion.out
-	make clean
-
 all: playdom player testsuite randomtestsuite testdom
 
 clean:
-	rm -rf *.o playdom.exe playdom test.exe test player unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4 randomtestcard1 randomtestcard2 randomtestadventurer testdom testmutantdom player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so *.a *.dSYM
+	rm -rf *.o playdom.exe playdom test.exe test player unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4 randomtestcard1 randomtestcard2 randomtestadventurer testdom player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so *.a *.dSYM

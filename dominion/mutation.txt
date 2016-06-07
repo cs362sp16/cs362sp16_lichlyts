@@ -1,0 +1,5 @@
+I only tried a few mutants, and surprisingly all the mutants I tried succeeded. But I could see running hundreds of mutants would be incredibly useful. I tried to automate the process of creating mutants but couldn’t get it to work.
+
+To generate mutants I copied in mutate.py from https://github.com/arun-babu/mutate.py and modified my make file to create a testmutantdominion.out. It can be created by running the following commands:
+	$ python mutate.py dominion.c mutantdominion.c
+	$ make testmutantdominion.out
