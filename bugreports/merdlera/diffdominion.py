@@ -46,8 +46,3 @@ for test in xrange(1, MAX_TESTS + 1):
         print "DIFF DETECTED"
         subprocess.call(["diff " + outfiles[0] + " " + outfiles[1]], shell = True)
         break
-
-
-print "****** Cleaning Directories ******"
-for (d) in doms:
-    subprocess.call(["cd " + d + "; make clean"], shell = True)

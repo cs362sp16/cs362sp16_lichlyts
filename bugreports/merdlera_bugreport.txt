@@ -1,0 +1,5 @@
+One bug I found was on line 35 of your dominion.c, you are setting z = z + 1 when you should be setting z = z - 1. This will screw up your discarding.
+
+Another bug I found was in cardMine in dominion.c, line 138, you are return -1 when the function successfully finishes. This should be a return 0.
+
+The last bug I found was in cardRemodel, line 157, you are not checking every card in their hand for the card you are trying to discard.
